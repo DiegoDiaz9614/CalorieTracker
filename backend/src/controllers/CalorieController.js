@@ -1,17 +1,21 @@
-import CalorieEntry from "../models/CalorieEntry";
+import CalorieEntry from "../models/CalorieEntry.js";
 
 //GET all the entries
-export const getAllCalories = async (requestAnimationFrame,res) => {
-    try{
-        const entries = await CalorieEntry.find().sort({date: -2});
-        res.json(entries)
+export const getAllCalories = async (req, res) => {
+    try {
+        console.log("Fetching all calorie entries...");
+        const entries = await CalorieEntry.find().sort({ date: -1 });
+        console.log("Entries fetched:", entries);
+        res.json(entries);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        console.error("Error fetching entries:", error);
+        res.status(500).json({ message: error.message });
     }
 };
 
+
 //POST a new entry
-export const createCaliorieEntry = async (req, res) => {
+export const createCalorieEntry = async (req, res) => {
     const {description, calories} = req.body;
     try{
         const newEntry = new CalorieEntry({description, calories});
